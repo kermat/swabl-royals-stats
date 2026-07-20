@@ -1,0 +1,2 @@
+# Keeps the stats/ directory in the repo. Drop GameChanger CSV exports here;
+# they are gitignored (contain player names) and stay on your machine.

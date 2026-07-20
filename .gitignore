@@ -1,0 +1,14 @@
+# Raw GameChanger exports contain real player names — keep them local only.
+# The published index.html is sanitized (see generate_site.py --names).
+stats/*.csv
+
+# Claude Code local settings & temp files (machine-specific)
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# OS cruft
+.DS_Store
+Thumbs.db

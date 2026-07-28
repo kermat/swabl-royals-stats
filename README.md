@@ -120,6 +120,31 @@ new CSV in `stats/` and re-run `python3 generate_site.py`. The script derives
 the Batting/Pitching/Fielding section boundaries from the export's own headers,
 so it keeps working even if GameChanger adds or removes individual stats.
 
+### Publishing the update to GitHub Pages
+
+The site is hosted on GitHub Pages from the `main` branch, so pushing a new
+`index.html` redeploys it automatically. To update the live page:
+
+```bash
+# 1. Drop the fresh GameChanger CSV into stats/, then regenerate:
+python3 generate_site.py
+
+# 2. Commit and push the regenerated site:
+git add index.html
+git commit -m "Update stats"
+git push
+```
+
+GitHub Pages redeploys within a minute or so at
+<https://kermat.github.io/swabl-royals-stats/>.
+
+Notes:
+
+- The raw CSV in `stats/` is gitignored, so it stays on your machine — only the
+  sanitized `index.html` is published.
+- If you also changed the logo or `generate_site.py`, add those files to the
+  commit too (e.g. `git add -A`).
+
 ## Files
 
 | Path                | Purpose                                             |

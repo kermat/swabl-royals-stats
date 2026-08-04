@@ -18,6 +18,7 @@ Re-run it any time you pull a fresh export from GameChanger.
 import argparse
 import base64
 import csv
+import datetime
 import glob
 import json
 import os
@@ -243,6 +244,14 @@ TEMPLATE = r'''<!DOCTYPE html>
   .hero-text { min-width: 0; }
   header.hero h1 { margin: 0; font-size: 22px; letter-spacing: .3px; }
   header.hero p { margin: 4px 0 0; color: #c9d6f5; font-size: 13px; }
+  .updated {
+    margin-top: 8px; display: inline-block;
+    background: rgba(255,255,255,.12); color: #fff;
+    border: 1px solid rgba(212,160,23,.55);
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .updated:empty { display: none; }
   @media (max-width: 520px) {
     .hero-logo { height: 52px; }
     header.hero h1 { font-size: 19px; }
@@ -317,6 +326,7 @@ TEMPLATE = r'''<!DOCTYPE html>
     <div class="hero-text">
       <h1 id="pageTitle"></h1>
       <p>Team stats — sortable. Click any column header to sort. Hover a header for its definition.</p>
+      <div class="updated" id="updated"></div>
     </div>
   </div>
 </header>
@@ -337,6 +347,7 @@ TEMPLATE = r'''<!DOCTYPE html>
 const DATA = JSON.parse(document.getElementById('data').textContent);
 const GLOSS = DATA.glossary;
 document.getElementById('pageTitle').textContent = DATA.title + ' — Team Stats';
+document.getElementById('updated').textContent = DATA.updated ? 'Updated ' + DATA.updated : '';
 
 // Reuse the embedded logo as the browser-tab favicon (no duplicated data).
 (function(){
@@ -534,6 +545,8 @@ def main():
         sys.exit(f"error: file not found: {csv_path}")
 
     payload = parse_csv(csv_path, scheme=args.names)
+    now = datetime.datetime.now()
+    payload["updated"] = f"{now:%B} {now.day}, {now.year}"
     logo_path = find_logo(args.logo)
     logo_uri = logo_data_uri(logo_path) if logo_path else None
     html = render_html(payload, logo_uri)
